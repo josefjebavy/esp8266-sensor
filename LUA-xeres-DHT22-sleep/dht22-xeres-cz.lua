@@ -5,8 +5,7 @@
 
 
 
--- key for thingspeak.com
-APIKEY="KEY262262"
+APIKEY=""
 
 
 function getTemp()

@@ -5,7 +5,7 @@
 print("Setting up WIFI...")
 wifi.setmode(wifi.STATION)
 --modify according your wireless router settings
-wifi.sta.config("opensource2","honzabranaass")
+wifi.sta.config("ssid","pass")
 wifi.sta.connect()
 i=0
 tmr.alarm(1, 1000, 1, function() 
