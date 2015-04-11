@@ -10,7 +10,7 @@ APIKEY=""
 
 function getTemp()
 PIN = 4 --  data pin, GPIO2
-dht22 = require("dht22")
+dht22= require("dht22")
 dht22.read(PIN)
 t = dht22.getTemperature()
 h = dht22.getHumidity()
@@ -51,6 +51,10 @@ HOST='wireless.xeres.cz'
 IP='192.168.100.250'
 --IP='192.168.100.107'
 getTemp()
+
+
+
+
 -- conection to xeres.cz
 
 --print("APIKEY"..APIKEY.." Temperature: "..Temperature.." deg C Humidity: "..Humidity.." %")
@@ -61,7 +65,7 @@ conn:on("receive", function(conn, payload) print(payload) end)
 conn:connect(80,IP) 
 --http://wireless.localhost/insert.php?zarizeni=1&stav=0&teplota=10&baterie=0&key=KEY262262
 
-conn:send("GET /insert.php?key="..APIKEY.."&zarizeni="..IDZARIZANI.."&stav=0&baterie=2&teplota1="..Temperature.."&teplota2="..Humidity.." HTTP/1.1\r\n") 
+conn:send("GET /insert.php?key="..APIKEY.."&zarizeni="..IDZARIZANI.."&stav=0&baterie="..batterie.."&teplota1="..Temperature.."&teplota2="..Humidity.." HTTP/1.1\r\n") 
 
 conn:send("Host:"..HOST.."\r\n") 
 conn:send("Accept: */*\r\n") 
@@ -81,6 +85,7 @@ conn:on("disconnection", function(conn)
                     gpio.write(pin,gpio.LOW)   
                     wifi.sta.disconnect()
                     node.dsleep(15*60*1000000,1)
+                    --node.dsleep(1000000,0)
                       end)
        
 

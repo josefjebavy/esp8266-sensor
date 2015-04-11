@@ -2,10 +2,22 @@
 --need file: dht22-xeres-cz+sleep.lua, dht22.lua
 
 
+-- ADC> batere measurement must be before set wifi
+v = node.readvdd33()
+--print ("node.readvdd33()")
+print('batery voltage:'..v/ 1000)
+batterie=2
+if (v>3400) then
+ batterie=1
+ else
+ batterie=0
+end
+v=nil
+------
 print("Setting up WIFI...")
 wifi.setmode(wifi.STATION)
 --modify according your wireless router settings
-wifi.sta.config("ssid","pass")
+wifi.sta.config("","")
 wifi.sta.connect()
 i=0
 tmr.alarm(1, 1000, 1, function() 
