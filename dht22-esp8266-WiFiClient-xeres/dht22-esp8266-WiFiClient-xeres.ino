@@ -36,7 +36,7 @@ const char* IDZARIZANI = "23";
 
 //
 ADC_MODE(ADC_VCC);
-double bat ;
+int bat ;
 void setup() {
 
   Serial.begin(115200);
@@ -49,7 +49,7 @@ void setup() {
   //bust before set WIFI!! je potreba merit nez se spusti wifi
   //with  ADC_MODE(ADC_VCC) it forks
   
-  bat = (double)(system_get_vdd33())/1000;
+  bat = system_get_vdd33();
 
   // We start by connecting to a WiFi network
   WiFi.mode(WIFI_STA);//: set mode to WIFI_AP, WIFI_STA
