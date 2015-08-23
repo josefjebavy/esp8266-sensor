@@ -33,6 +33,10 @@ const char* APIKEY = "";
 const char* IDZARIZANI = "23";
 //const char* Temperature = "25";
 //const char* Humidity = "35";
+
+//
+ADC_MODE(ADC_VCC);
+double bat ;
 void setup() {
 
   Serial.begin(115200);
@@ -41,6 +45,12 @@ void setup() {
   pinMode(LEDPIN, OUTPUT);
 
   dht.begin();
+
+  //bust before set WIFI!! je potreba merit nez se spusti wifi
+  //with  ADC_MODE(ADC_VCC) it forks
+  
+  bat = (double)(system_get_vdd33())/1000;
+
   // We start by connecting to a WiFi network
   WiFi.mode(WIFI_STA);//: set mode to WIFI_AP, WIFI_STA
   //WiFi.begin(ssid, password);
@@ -52,7 +62,7 @@ void setup() {
   WiFi.begin(ssid, password);
   int i = 0;
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    delay(1000);
     Serial.print(".");
     i++;
 
@@ -60,8 +70,8 @@ void setup() {
     if (i > 10) {
       Serial.println("try connect to WiFi, then sleep");
       //system_deep_sleep_set_option(0);
-      system_deep_sleep(1000000);
-      //system_deep_sleep(60 * 1000000);
+      //system_deep_sleep(1000000);
+      system_deep_sleep(60 * 1000000);
     }
   }
 
@@ -69,11 +79,14 @@ void setup() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
+
 }
 
 
 
 void loop() {
+
 
 
   digitalWrite(LEDPIN, HIGH);   // turn the LED on (HIGH is the voltage level)
@@ -108,7 +121,9 @@ void loop() {
       url +=  APIKEY ;
       url +=  "&zarizeni=" ;
       url +=  IDZARIZANI ;
-      url += "&stav=0&baterie=2&teplota1=" ;
+      url += "&stav=0&baterie=";
+      url += bat;
+      url += "&teplota1=" ;
       url +=  t ;
       url +=  "&teplota2=" ;
       url +=  h;
@@ -138,8 +153,8 @@ void loop() {
 
   //C sleep function
   //system_deep_sleep_set_option(0);
-  system_deep_sleep(1000000);
-  //system_deep_sleep(15 * 60 * 1000000);
+  //system_deep_sleep(1000000);
+  system_deep_sleep(15 * 60 * 1000000);
   // wait because module  still wotking
   delay(100);
 }
